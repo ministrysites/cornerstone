@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class {{ class }} extends Controller
+{
+    public function store(Request $request): never
+    {
+        abort(404);
+    }
+
+    public function show(): mixed
+    {
+    }
+
+    public function update(Request $request): mixed
+    {
+    }
+
+    public function destroy(): never
+    {
+        abort(404);
+    }
+}

@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ namespacedRequests }}
+
+class {{ class }} extends Controller
+{
+    public function index(): mixed
+    {
+    }
+
+    public function store({{ storeRequest }} $request): mixed
+    {
+    }
+
+    public function show({{ model }} ${{ modelVariable }}): mixed
+    {
+    }
+
+    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }}): mixed
+    {
+    }
+
+    public function destroy({{ model }} ${{ modelVariable }}): mixed
+    {
+    }
+}
