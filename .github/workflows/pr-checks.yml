@@ -40,7 +40,10 @@ jobs:
             ${{ runner.os }}-php-8.3-composer-
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+      - name: Discover packages
+        run: php artisan package:discover --ansi
 
       - name: Run Pint
         run: composer run pint:test
@@ -72,7 +75,10 @@ jobs:
             ${{ runner.os }}-php-8.3-composer-
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+      - name: Discover packages
+        run: php artisan package:discover --ansi
 
       - name: Run PHPStan
         run: composer run stan
@@ -104,7 +110,10 @@ jobs:
             ${{ runner.os }}-php-8.3-composer-
 
       - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+      - name: Discover packages
+        run: php artisan package:discover --ansi
 
       - name: Run Pest
         run: composer test

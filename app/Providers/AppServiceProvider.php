@@ -26,9 +26,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->isProduction()
         );
 
-        Model::shouldBeStrict(
-            ! $this->app->isProduction()
-        );
+        Model::shouldBeStrict();
 
         Password::defaults(
             fn () => $this->app->isProduction()

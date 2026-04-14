@@ -1,18 +1,24 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "ministrysites/cornerstone",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Opinionated Laravel 13 + Livewire 4 starter kit for MinistrySites projects, wired for strict types, Pest, PHPStan, and Pint out of the box.",
     "keywords": [
         "laravel",
-        "framework"
+        "livewire",
+        "starter-kit",
+        "pest",
+        "phpstan",
+        "pint",
+        "ministrysites",
+        "cornerstone"
     ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
-        "livewire/livewire": "*"
+        "livewire/livewire": "^4.2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
