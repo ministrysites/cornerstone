@@ -1,58 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Cornerstone Starter Kit
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Cornerstone is an opinionated Laravel starter kit built for MinistrySites projects. It gives us a clean Laravel 13 base with the tooling, conventions, and local package hooks used across this stack so new projects start from the same foundation.
 
-## About Laravel
+This starter kit is primarily for our own use. If the choices here match how you like to build, you are welcome to use it too. If they do not, you will likely be better served by forking it and shaping it around your own conventions rather than trying to generalize this one.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Important note
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This repository is intentionally opinionated.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+That is not accidental and is not a temporary state. The purpose of this starter kit is to encode a specific workflow with specific defaults and assumptions for our projects.
 
-## Learning Laravel
+## What is included
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel 13 on PHP 8.3+
+- Livewire for server-driven UI
+- Vite with Tailwind CSS v4
+- Pest for testing
+- Laravel Pint for formatting
+- Larastan / PHPStan for static analysis
+- Laravel Boost and Pail for local development
+- Quick intallation for optional packages by using `php artisan cornerstone:install`
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Before setup, make sure you have:
 
-## Agentic Development
+- PHP 8.3 or newer
+- Composer
+- Node.js and npm
+- A database supported by Laravel
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Getting started
+
+If dependencies are not installed yet, the fastest path is:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer run setup
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+That script will:
+
+1. Install PHP dependencies
+2. Create `.env` from `.env.example` if needed
+3. Generate an app key
+4. Run database migrations
+5. Install JavaScript dependencies
+6. Build frontend assets
+
+If you prefer to do that manually:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
+npm run build
+```
+
+## Local development
+
+Start the full local development stack with:
+
+```bash
+composer run dev
+```
+
+This runs:
+
+- The Laravel app server
+- A queue listener
+- Laravel Pail for logs
+- The Vite dev server
+
+If you only need frontend assets:
+
+```bash
+npm run dev
+```
+
+## Quality checks
+
+Common project checks are already defined in Composer:
+
+```bash
+composer run test
+composer run stan
+composer run pint:test
+composer run check
+```
+
+Useful fix commands:
+
+```bash
+composer run pint
+composer run fix
+```
+
+## GitHub setup
+
+If you use this starter kit on GitHub, protect the `main` branch before team use.
+
+- Require pull requests before merging
+- Require passing CI checks before merging
+- Block direct pushes to `main`
+
+## Project structure
+
+- `resources/views/layouts/app.blade.php` contains the base Blade layout with Vite and Livewire assets
+- `routes/web.php` currently serves the default welcome page at `/`
+- `app/` is the application code for controllers, models, providers, and future domain logic
+- `tests/` contains Pest-based feature and unit tests
+- `stubs/` contains custom publishable stubs used by this starter
+
+## First customizations
+
+After creating a new project from this starter, the usual first edits are:
+
+- Set the application name and environment values in `.env`
+- Replace the default welcome page with your actual homepage or dashboard
+- Add project-specific routes, Livewire components, and domain models
+- Configure queue, mail, cache, and filesystem drivers for the target environment
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Issues and pull requests are welcome, but keep the scope aligned with the purpose of the starter kit.
 
-## Code of Conduct
+The fastest way to get a contribution accepted is to keep it focused on:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- fixing bugs
+- improving reliability
+- clarifying behavior or documentation
+- improving maintainability without changing the starter kit's opinions
 
-## Security Vulnerabilities
+Pull requests that add features, broaden the starter kit's scope, or change the underlying opinions and defaults are unlikely to be merged.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you need materially different behavior, the better path is usually to fork this starter kit and adapt it to your own conventions.
 
-## License
+## Notes
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- The app uses strict types in project PHP files by default
+- The repository is intended to be a starting point, not a finished product
