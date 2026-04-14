@@ -4,8 +4,41 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../../app/**/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    --font-display: 'Playfair Display', Georgia, ui-serif, serif;
+
+    /* Carbon — warm charcoal neutral */
+    --color-carbon-50:  #f7f4f0;
+    --color-carbon-100: #ede9e4;
+    --color-carbon-200: #d9d3c8;
+    --color-carbon-300: #bfb8ac;
+    --color-carbon-400: #9e978b;
+    --color-carbon-500: #7a736b;
+    --color-carbon-600: #5a534d;
+    --color-carbon-700: #3d3935;
+    --color-carbon-800: #2a2622;
+    --color-carbon-900: #1c1917;
+    --color-carbon-950: #100e0c;
+
+    /* Ember — warm orange-red accent */
+    --color-ember-50:  #fff5ef;
+    --color-ember-100: #ffe8d8;
+    --color-ember-200: #fecdac;
+    --color-ember-300: #fda878;
+    --color-ember-400: #fb7840;
+    --color-ember-500: #f75118;
+    --color-ember-600: #e03a09;
+    --color-ember-700: #b92d09;
+    --color-ember-800: #93240d;
+    --color-ember-900: #78220f;
+    --color-ember-950: #3e0e04;
+}
+
+@layer base {
+    [x-cloak] {
+        display: none !important;
+    }
 }
