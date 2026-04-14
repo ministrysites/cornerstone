@@ -1,143 +1,164 @@
-# Cornerstone Starter Kit
+# Cornerstone
 
-Cornerstone is an opinionated Laravel starter kit built for MinistrySites projects. It gives us a clean Laravel 13 base with the tooling, conventions, and local package hooks used across this stack so new projects start from the same foundation.
+Cornerstone is the Laravel starter kit  to spin up new projects. It is a clean Laravel 13 + Livewire 4 base with the tooling, conventions, and quality gates across the stack, so every new project starts from the same foundation.
 
-This starter kit is primarily for our own use. If the choices here match how you like to build, you are welcome to use it too. If they do not, you will likely be better served by forking it and shaping it around your own conventions rather than trying to generalize this one.
+This kit is primarily for our own use. If the choices here line up with how you like to build, you are welcome to use it. If they do not, you will almost certainly be happier forking it and reshaping it than trying to bend it to a different philosophy.
 
-## Important note
+## Opinions, on purpose
 
-This repository is intentionally opinionated.
+Cornerstone is intentionally opinionated. That is not a temporary state and it is not up for debate on a per-project basis. The whole point of the kit is to encode a specific workflow with specific defaults so that humans and AI tools generating code on top of it land in the same place.
 
-That is not accidental and is not a temporary state. The purpose of this starter kit is to encode a specific workflow with specific defaults and assumptions for our projects.
+The shape of those opinions:
 
-## What is included
+- **Explicit over clever.** Strict types on every PHP file. Typed properties, typed return values, narrow public state.
+- **Livewire-first.** Server-driven components for web UI, Alpine for small client-side niceties. No SPA build pipeline. No duplicated state across a JS framework.
+- **Tested from commit one.** Pest feature tests for user-facing behavior, Pest architecture tests for the boundaries we care about.
+- **Analyzed before merge.** Larastan / PHPStan and Pint run locally and in CI, with protected branches expected to flow through pull requests. `composer check` is the gate.
+
+## What's in the box
 
 - Laravel 13 on PHP 8.3+
-- Livewire for server-driven UI
-- Vite with Tailwind CSS v4
-- Pest for testing
-- Laravel Pint for formatting
-- Larastan / PHPStan for static analysis
-- Laravel Boost and Pail for local development
-- Quick intallation for optional packages by using `php artisan cornerstone:install`
+- Livewire 4 for server-driven UI
+- Vite 8 + Tailwind CSS 4
+- Pest 4 (feature, unit, architecture suites)
+- Larastan / PHPStan
+- Laravel Pint with a tightened ruleset
+- Laravel Boost and Pail for local dev and AI-aware scaffolding
+- `php artisan cornerstone:install` for pulling in predetermained but optional packages
 
 ## Requirements
-
-Before setup, make sure you have:
 
 - PHP 8.3 or newer
 - Composer
 - Node.js and npm
-- A database supported by Laravel
+- A database supported by Laravel (SQLite is fine for local work)
+- A local dev environment that can serve the app over HTTPS (Herd, Valet, or equivalent)
 
 ## Getting started
 
-If dependencies are not installed yet, the fastest path is:
+```bash
+composer create-project ministrysites/cornerstone my-app
+cd my-app
+composer run dev
+```
+
+If you already have the repo cloned and just need to set it up:
 
 ```bash
 composer run setup
 ```
 
-That script will:
-
-1. Install PHP dependencies
-2. Create `.env` from `.env.example` if needed
-3. Generate an app key
-4. Run database migrations
-5. Install JavaScript dependencies
-6. Build frontend assets
-
-If you prefer to do that manually:
-
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate
-npm install
-npm run build
-```
+That script installs PHP and JS dependencies, creates `.env` from `.env.example` if needed, generates an app key, runs migrations, and builds frontend assets.
 
 ## Local development
-
-Start the full local development stack with:
 
 ```bash
 composer run dev
 ```
 
-This runs:
+Runs the Laravel app server, a queue listener, Laravel Pail for logs, and the Vite dev server together. If you only need frontend assets, `npm run dev` is enough.
 
-- The Laravel app server
-- A queue listener
-- Laravel Pail for logs
-- The Vite dev server
+### HTTPS locally
 
-If you only need frontend assets:
-
-```bash
-npm run dev
-```
+The kit assumes your local environment serves the app over HTTPS. That gives you a secure context for secure cookies, OAuth redirects, and third-party callbacks without surprises. If your environment does not terminate TLS, either add HTTPS support or adjust `AppServiceProvider` for that environment instead of relying on the starter default.
 
 ## Quality checks
 
-Common project checks are already defined in Composer:
+Cornerstone treats `composer run check` as the definition of green.
 
 ```bash
-composer run test
-composer run stan
-composer run pint:test
-composer run check
+composer run check        # pint (dirty) + phpstan + pest
+composer run check:all    # pint (full) + phpstan + pest
+composer run fix          # pint --dirty, then phpstan, then pest
+composer run fix:all      # pint (full), then phpstan, then pest
 ```
 
-Useful fix commands:
+Individual tools:
 
 ```bash
-composer run pint
-composer run fix
+composer run pint         # format
+composer run pint:test    # check formatting without writing
+composer run stan         # phpstan
+composer run test         # pest in parallel
 ```
+
+## Architecture conventions
+
+- Livewire is the default for web UI and interactive pages.
+- Standard controllers are fine for request-response flows that Livewire does not improve: redirects, OAuth callbacks, webhook endpoints, JSON APIs.
+- Validate input explicitly at the boundary where it enters the system.
+- Keep Livewire components and controllers thin. If a component grows a real domain, push the logic into a typed service or action and call it from the component.
+- Prefer feature tests for user-facing behavior. Use unit tests for isolated logic. Use architecture tests for rules you want to be unbreakable.
+- Do not commit debug helpers (`dd`, `dump`, `ray`, `var_dump`) into application code. The architecture suite enforces this.
+- Do not call `env()` outside of `config/`. The architecture suite enforces this too.
+
+## AI-assisted development
+
+Cornerstone is designed to work well with Laravel Boost and with AI coding tools generally. The guardrails that matter live in three places:
+
+1. **Pint + PHPStan + Pest.** If generated code does not pass `composer run check`, it is not done.
+2. **Architecture tests.** Rules like "strict types on every file" and "no debug helpers in committed code" are enforced by the test suite, not by vibes.
+3. **Boost guidelines under `.ai/guidelines`.** This is the single place to add project-specific AI guidance. Treat it as the primary home for guardrails instead of maintaining separate agent-specific instruction files.
+
+Useful Boost commands:
+
+```bash
+php artisan boost:install   # publish Boost resources (first time)
+php artisan boost:update    # refresh Boost resources after dependency changes
+```
+
+## Definition of done
+
+Before opening a pull request or handing work off, a change should meet these checks:
+
+1. `composer run pint:test` passes.
+2. `composer run stan` passes.
+3. `composer run test` passes, including the architecture suite.
+4. No debug helpers remain in committed code.
+5. The change follows the kit's explicit-code and Livewire-first conventions.
+
+## Project layout
+
+- `app/Livewire` — Livewire components for web-facing UI
+- `app/Http/Controllers` — controllers for request-response flows that do not fit Livewire
+- `app/Models` — Eloquent models
+- `resources/views/layouts/app.blade.php` — base Blade layout with Vite and Livewire assets
+- `resources/views/livewire` — Livewire component views
+- `routes/web.php` — web routes (the example Livewire homepage lives here)
+- `tests/Feature` — Pest feature tests
+- `tests/Unit` — Pest unit tests
+- `tests/Architecture` — Pest architecture tests that encode the kit's rules
+- `.ai/guidelines` — project-specific Boost guidance for AI-assisted development
+
+## First customizations
+
+After creating a new project from Cornerstone, the usual first edits are:
+
+- Set the application name and environment values in `.env`
+- Replace the example homepage with your actual landing page, dashboard, or product entry point
+- Add project-specific routes, Livewire components, and domain models
+- Configure queue, mail, cache, and filesystem drivers for the target environment
+- Add project-specific Boost guidelines under `.ai/guidelines` for any conventions unique to the project
 
 ## GitHub setup
 
-If you use this starter kit on GitHub, protect the `main` branch before team use.
+If you host the project on GitHub, protect `main` before team use:
 
 - Require pull requests before merging
 - Require passing CI checks before merging
 - Block direct pushes to `main`
 
-## Project structure
-
-- `resources/views/layouts/app.blade.php` contains the base Blade layout with Vite and Livewire assets
-- `routes/web.php` currently serves the default welcome page at `/`
-- `app/` is the application code for controllers, models, providers, and future domain logic
-- `tests/` contains Pest-based feature and unit tests
-- `stubs/` contains custom publishable stubs used by this starter
-
-## First customizations
-
-After creating a new project from this starter, the usual first edits are:
-
-- Set the application name and environment values in `.env`
-- Replace the default welcome page with your actual homepage or dashboard
-- Add project-specific routes, Livewire components, and domain models
-- Configure queue, mail, cache, and filesystem drivers for the target environment
-
 ## Contributing
 
-Issues and pull requests are welcome, but keep the scope aligned with the purpose of the starter kit.
-
-The fastest way to get a contribution accepted is to keep it focused on:
+Issues and pull requests are welcome, but the scope of this kit is narrow on purpose. The fastest way to get a contribution accepted is to keep it focused on:
 
 - fixing bugs
 - improving reliability
 - clarifying behavior or documentation
-- improving maintainability without changing the starter kit's opinions
+- improving maintainability without changing the kit's opinions
 
-Pull requests that add features, broaden the starter kit's scope, or change the underlying opinions and defaults are unlikely to be merged.
+Pull requests that add features, broaden the scope, or change the underlying opinions and defaults are unlikely to be merged. If you need materially different behavior, fork the kit and adapt it to your own conventions.
 
-If you need materially different behavior, the better path is usually to fork this starter kit and adapt it to your own conventions.
+## License
 
-## Notes
-
-- The app uses strict types in project PHP files by default
-- The repository is intended to be a starting point, not a finished product
+Cornerstone is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
