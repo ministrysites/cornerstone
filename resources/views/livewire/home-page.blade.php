@@ -112,6 +112,13 @@
                         <p class="mt-3 text-sm leading-relaxed text-carbon-300">
                             The value passed Laravel's email rule and this panel re-rendered. That's the whole demo.
                         </p>
+                        <button
+                            type="button"
+                            wire:click="resetDemo"
+                            class="mt-5 inline-flex items-center gap-3 border border-ember-400 px-5 py-3 text-[11px] uppercase tracking-[0.25em] text-ember-400 transition-colors hover:bg-ember-400 hover:text-carbon-900"
+                        >
+                            Run it again →
+                        </button>
                     </div>
                 @else
                     <form wire:submit="runDemo" class="space-y-4" novalidate>

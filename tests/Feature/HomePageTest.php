@@ -72,3 +72,14 @@ test('the validation demo marks the component as validated on success', function
         ->assertSet('email', '')
         ->assertSee('Round-trip complete');
 });
+
+test('the validation demo can be reset and run again', function (): void {
+    Livewire::test(HomePage::class)
+        ->set('email', 'reader@example.com')
+        ->call('runDemo')
+        ->assertSet('validated', true)
+        ->call('resetDemo')
+        ->assertSet('validated', false)
+        ->assertSet('email', '')
+        ->assertHasNoErrors();
+});

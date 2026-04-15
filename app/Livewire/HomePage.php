@@ -87,6 +87,13 @@ class HomePage extends Component
         $this->email = '';
     }
 
+    public function resetDemo(): void
+    {
+        $this->validated = false;
+        $this->email = '';
+        $this->resetValidation();
+    }
+
     public function render(): View
     {
         return view('livewire.home-page', [
