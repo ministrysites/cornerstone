@@ -1,0 +1,18 @@
+# Cornerstone demo manifest
+#
+# The cornerstone-devtools cleanup command deletes every file listed
+# below and then deletes this manifest. Add files here the moment a
+# new demo file is committed so the manifest never drifts from what
+# is actually in the repo.
+#
+# Lines starting with # are comments. Blank lines are ignored.
+# Paths are repo-relative.
+
+app/Livewire/HomePage.php
+resources/views/livewire/home-page.blade.php
+resources/views/components/cornerstone/faq-item.blade.php
+tests/Feature/HomePageTest.php
+app/Services/EmailAddressClassifier.php
+app/Data/EmailClassification.php
+app/Enums/EmailCategory.php
+tests/Unit/Services/EmailAddressClassifierTest.php
