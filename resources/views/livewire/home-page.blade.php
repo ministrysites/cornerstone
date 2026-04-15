@@ -108,9 +108,11 @@
             <div class="mt-10 max-w-xl">
                 @if ($validated)
                     <div class="border border-ember-400 p-6">
-                        <p class="font-mono text-[11px] uppercase tracking-[0.25em] text-ember-400">Round-trip complete ✓</p>
+                        <p class="font-mono text-[11px] uppercase tracking-[0.25em] text-ember-400">
+                            Classified as {{ $lastCategory->value }} ✓
+                        </p>
                         <p class="mt-3 text-sm leading-relaxed text-carbon-300">
-                            The value passed Laravel's email rule and this panel re-rendered. That's the whole demo.
+                            The server validated the value, handed it to a typed service in <span class="font-mono text-carbon-50">App\Services</span>, and got back an <span class="font-mono text-carbon-50">App\Data\EmailClassification</span> value object. Domain: <span class="font-mono text-carbon-50">{{ $lastDomain }}</span>.
                         </p>
                         <button
                             type="button"

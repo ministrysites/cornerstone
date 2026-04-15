@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\EmailCategory;
 use App\Livewire\HomePage;
 use Livewire\Livewire;
 
@@ -63,14 +64,23 @@ test('the validation demo rejects an invalid value', function (): void {
         ->assertSet('validated', false);
 });
 
-test('the validation demo marks the component as validated on success', function (): void {
+test('the validation demo classifies a successful submission', function (): void {
     Livewire::test(HomePage::class)
         ->set('email', 'reader@example.com')
         ->call('runDemo')
         ->assertHasNoErrors()
         ->assertSet('validated', true)
-        ->assertSet('email', '')
-        ->assertSee('Round-trip complete');
+        ->assertSet('lastCategory', EmailCategory::Personal)
+        ->assertSet('lastDomain', 'example.com')
+        ->assertSee('Classified as personal');
+});
+
+test('role based submissions are surfaced through the classifier', function (): void {
+    Livewire::test(HomePage::class)
+        ->set('email', 'support@example.com')
+        ->call('runDemo')
+        ->assertSet('lastCategory', EmailCategory::Role)
+        ->assertSee('Classified as role');
 });
 
 test('the validation demo can be reset and run again', function (): void {
@@ -81,5 +91,7 @@ test('the validation demo can be reset and run again', function (): void {
         ->call('resetDemo')
         ->assertSet('validated', false)
         ->assertSet('email', '')
+        ->assertSet('lastCategory', null)
+        ->assertSet('lastDomain', null)
         ->assertHasNoErrors();
 });

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Enums\EmailCategory;
+use App\Services\EmailAddressClassifier;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -74,23 +76,34 @@ class HomePage extends Component
     #[Locked]
     public bool $validated = false;
 
+    #[Locked]
+    public ?EmailCategory $lastCategory = null;
+
+    #[Locked]
+    public ?string $lastDomain = null;
+
     public function selectPillar(int $index): void
     {
         $this->activePillar = $index;
     }
 
-    public function runDemo(): void
+    public function runDemo(EmailAddressClassifier $classifier): void
     {
         $this->validate();
 
+        $classification = $classifier->classify($this->email);
+
+        $this->lastCategory = $classification->category;
+        $this->lastDomain = $classification->domain;
         $this->validated = true;
-        $this->email = '';
     }
 
     public function resetDemo(): void
     {
         $this->validated = false;
         $this->email = '';
+        $this->lastCategory = null;
+        $this->lastDomain = null;
         $this->resetValidation();
     }
 
