@@ -21,6 +21,7 @@ arch('app code uses strict types')
 
 arch('app classes are not final')
     ->expect('App')
+    ->classes()
     ->not->toBeFinal();
 
 arch('controllers extend the base controller')
