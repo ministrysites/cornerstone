@@ -9,4 +9,3 @@ parameters:
         - routes
         - tests/Unit
     level: 5
-    checkModelProperties: true
