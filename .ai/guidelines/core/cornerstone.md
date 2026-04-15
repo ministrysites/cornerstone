@@ -50,6 +50,8 @@ Cornerstone is an opinionated Laravel 13 + Livewire 4 starter kit focused on exp
 ### Scope discipline
 
 - Prefer editing existing files over creating new ones. Match the existing file and namespace structure.
+- When a new file is genuinely needed, scaffold it with `php artisan make:*` and build on the resulting file. The project's `stubs/` directory holds Cornerstone-customized stubs that already encode the conventions in this guide (strict types, native type hints, no docblocks). Do not hand-roll equivalents from scratch.
+- For patterns Laravel does not scaffold, follow the shape of whatever is already in the matching directory: typed services in `app/Services/`, readonly value objects / DTOs in `app/Data/` (DTOs only, no enums), and backed enums in `app/Enums/`. When adding code in one of these directories, open an existing file there and mirror its shape.
 - Do not install new Composer or npm packages without explicit instruction.
 - Do not introduce new base classes, abstractions, or patterns beyond what the task requires.
 - Do not add agent-specific instruction files when Boost guidelines can express the same rule.
