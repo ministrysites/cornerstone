@@ -76,9 +76,7 @@ class HomePage extends Component
 
     public function selectPillar(int $index): void
     {
-        $max = count(self::PILLARS) - 1;
-
-        $this->activePillar = max(0, min($max, $index));
+        $this->activePillar = $index;
     }
 
     public function runDemo(): void

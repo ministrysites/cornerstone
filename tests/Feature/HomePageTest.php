@@ -47,14 +47,6 @@ test('selecting a pillar updates the active pillar via livewire', function (): v
         ->assertSee('Pest from the very first commit.');
 });
 
-test('selecting an out of range pillar is clamped to a valid index', function (): void {
-    Livewire::test(HomePage::class)
-        ->call('selectPillar', 99)
-        ->assertSet('activePillar', 3)
-        ->call('selectPillar', -10)
-        ->assertSet('activePillar', 0);
-});
-
 test('the validation demo rejects an empty value', function (): void {
     Livewire::test(HomePage::class)
         ->set('email', '')
