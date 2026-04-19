@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace {{ namespace }};
 
 {{ factoryImport }}
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[Fillable([])]
+#[UseFactory({{ class }}Factory::class)]
 class {{ class }} extends Model
 {
     {{ factory }}
