@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "ministrysites/cornerstone",
     "type": "project",
-    "description": "Opinionated Laravel 13 + Livewire 4 starter kit for MinistrySites projects, wired for strict types, Pest, PHPStan, and Pint out of the box.",
+    "description": "Opinionated Laravel 13 + Livewire 4 starter kit, wired for strict types, Pest, PHPStan, and Pint out of the box.",
     "keywords": [
         "laravel",
         "livewire",
