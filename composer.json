@@ -16,6 +16,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "glhd/bits": "^0.6.2",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.2.0"

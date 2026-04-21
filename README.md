@@ -97,7 +97,7 @@ The architecture suite enforces several rules without room for negotiation:
 - No debug helpers (`dd`, `dump`, `ray`, `var_dump`) in application code.
 - No `env()` calls outside of `config/`.
 - Public Livewire properties must carry `#[Locked]`, `#[Validate]`, `#[Url]`, or `#[Modelable]`.
-- Models use attribute-based configuration (`#[Fillable]`, `#[Hidden]`, `#[UseFactory]`) and do not call facades.
+- Models use attribute-based configuration (`#[Fillable]`, `#[UseFactory]` when using factories).
 
 ## AI-assisted development
 

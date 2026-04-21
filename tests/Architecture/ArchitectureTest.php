@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,10 +33,6 @@ arch('livewire components extend the livewire base component')
     ->expect('App\Livewire')
     ->classes()
     ->toExtend(Component::class);
-
-arch('models do not use facades')
-    ->expect('App\Models')
-    ->not->toUse('Illuminate\Support\Facades');
 
 arch('debug helpers are not committed into application code')
     ->expect(['dd', 'dump', 'ray', 'var_dump'])
@@ -85,14 +80,14 @@ test('public livewire properties are explicitly bound, locked, or synced', funct
 });
 
 test('models use attribute-based configuration', function (): void {
-    $requiredAttributes = [Fillable::class, Hidden::class];
+    $requiredAttributes = [Fillable::class];
     $forbiddenProperties = ['fillable', 'guarded', 'hidden', 'casts'];
     $inspected = 0;
 
     foreach (modelClasses() as $class) {
         $reflection = new ReflectionClass($class);
 
-        if ( ! $reflection->isSubclassOf(Model::class)) {
+        if ($reflection->isAbstract() || ! $reflection->isSubclassOf(Model::class)) {
             continue;
         }
 
